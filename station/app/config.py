@@ -33,6 +33,10 @@ class Settings:
     def cache_ttl(self):
         return int(os.getenv('CACHE_TTL', 300))
 
+    @property
+    def cache_key_prefix(self) -> str:
+        return os.getenv("CACHE_KEY_PREFIX", "station-cache-")
+
     @staticmethod
     def get_async_redis() -> aioredis.Redis:
         """
