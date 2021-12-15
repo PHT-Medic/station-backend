@@ -71,6 +71,7 @@ def assign_config_to_docker_train(train_id: str, config_id: int, db: Session = D
     train = docker_train_config.assign_to_train(db, train_id, config.id)
     return train
 
+
 @router.get("/trains/docker/{train_id}/state")
 def get_state_for_train(train_id: str, db: Session = Depends(dependencies.get_db)):
     pass

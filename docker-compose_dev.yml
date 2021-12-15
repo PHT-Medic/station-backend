@@ -1,6 +1,5 @@
 version: '3.8'
 
-
 volumes:
   pg_pht_station:
     external: True
@@ -59,14 +58,20 @@ services:
 
     command: server /data
 
-  fhir-blaze:
-    image: samply/blaze
-    volumes:
-      - blaze_data:/app/data
-    environment:
-      BASE_URL: "127.0.0.1:8082"
-      JAVA_TOOL_OPTIONS: "-Xmx2g"
-      OPENID_PROVIDER_URL: "https://keycloak-pht.tada5hi.net/auth/realms/blaze"
+  redis:
+    image: redis:alpine
     ports:
-      - "8082:8080"
+      - "6379:6379"
+
+#  fhir-blaze:
+#    image: samply/blaze
+#    volumes:
+#      - blaze_data:/app/data
+#    environment:
+#      BASE_URL: "127.0.0.1:8082"
+#      JAVA_TOOL_OPTIONS: "-Xmx2g"
+#      OPENID_PROVIDER_URL: "https://keycloak-pht.tada5hi.net/auth/realms/blaze"
+#    ports:
+#      - "8082:8080"
+
 

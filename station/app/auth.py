@@ -45,8 +45,3 @@ async def get_auth(token: str = Security(oauth2_scheme)) -> Json:
             detail=str(e),  # "Invalid authentication credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
-# async def get_current_user(
-#         identity: Json = Depends(get_auth)
-# ) -> User:
-#     return User.first_or_fail(identity['sub'])  # get your user form the DB using identity['sub']

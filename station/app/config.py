@@ -1,5 +1,7 @@
 import os
 from cryptography.fernet import Fernet
+import aioredis
+import redis
 
 
 class Settings:
@@ -11,10 +13,38 @@ class Settings:
     def get_fernet():
         # todo get key from config file
         key = os.getenv('FERNET_KEY').encode()
-        print(key)
         if key is None:
             raise ValueError("No Fernet key provided")
         return Fernet(key)
+
+    @staticmethod
+    def get_sync_redis() -> redis.Redis:
+        """
+        Obtain a synchronous redis connection based on environment variables.
+
+        Returns:
+
+        """
+        redis_host = os.getenv('REDIS_HOST', 'localhost')
+        redis_port = os.getenv('REDIS_PORT', 6379)
+        return redis.Redis(host=redis_host, port=redis_port)
+
+    @property
+    def cache_ttl(self):
+        return int(os.getenv('CACHE_TTL', 300))
+
+    @staticmethod
+    def get_async_redis() -> aioredis.Redis:
+        """
+        Obtain an asynchronous redis connection based on environment variables
+
+        Returns:
+
+        """
+        redis_host = os.getenv('REDIS_HOST', 'localhost')
+        redis_port = os.getenv('REDIS_PORT', 6379)
+        redis_url = f"redis://{redis_host}:{redis_port}/0"
+        return aioredis.from_url(redis_url)
 
 
 class LogConfig:

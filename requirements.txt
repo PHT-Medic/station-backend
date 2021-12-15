@@ -18,3 +18,4 @@ torchvision
 python-keycloak
 fhir-kindling
 pht-train-container-library
+aioredis
