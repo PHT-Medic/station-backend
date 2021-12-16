@@ -7,30 +7,31 @@ from station.app.api import dependencies
 from station.app.schemas.datasets import DataSet, DataSetCreate, DataSetUpdate
 from station.app.crud import datasets
 from station.clients.minio import MinioClient
+from station.app.api.cache import cache
 
 router = APIRouter()
 
 
-@router.get("/{data_set_id}")
+@router.get("/{data_set_id}", response_model=DataSet)
 def get_data_set(data_set_id: Any, db: Session = Depends(dependencies.get_db)) -> DataSet:
     db_dataset = datasets.get(db, data_set_id)
     return db_dataset
 
 
-@router.post("")
+@router.post("", response_model=DataSet)
 def create_new_data_set(create_msg: DataSetCreate, db: Session = Depends(dependencies.get_db)) -> DataSet:
     db_dataset = datasets.create(db, obj_in=create_msg)
     return db_dataset
 
 
-@router.put("/{dataset_id}")
+@router.put("/{dataset_id}", response_model=DataSet)
 def update_data_set(dataset_id: Any, update_msg: DataSetUpdate, db: Session = Depends(dependencies.get_db)) -> DataSet:
     db_data_set = datasets.get(db, id=dataset_id)
     new_db_data_set = datasets.update(db, db_data_set, update_msg)
     return new_db_data_set
 
 
-@router.get("")
+@router.get("", response_model=List[DataSet])
 def read_all_data_sets(db: Session = Depends(dependencies.get_db)) -> List[DataSet]:
     all_datasets = datasets.get_multi(db=db, limit=None)
     return all_datasets

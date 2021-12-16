@@ -12,7 +12,6 @@ class CRUDDatasets(CRUDBase[DataSet, DataSetCreate, DataSetUpdate]):
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
-        print(obj_in_data)
         db_obj = self.model(**obj_in_data)
         if obj_in_data["storage_type"] == "minio":
             self._extract_mino_information(db_obj, obj_in_data)
