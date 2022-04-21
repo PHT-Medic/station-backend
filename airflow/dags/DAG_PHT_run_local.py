@@ -79,7 +79,7 @@ def run_local():
         @return: train_state_dict
         """
         docker_client = docker.from_env()
-        harbor_address = os.getenv("HARBOR_API_URL")
+        harbor_address = os.getenv("HARBOR_URL")
         docker_client.login(username=os.getenv("HARBOR_USER"), password=os.getenv("HARBOR_PW"),
                             registry=harbor_address)
         docker_client.images.pull(repository=train_state_dict["repository"], tag=train_state_dict["tag"])

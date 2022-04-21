@@ -164,3 +164,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 /station/app/local_train_minio/local_trains_files/
+/station/tests/test.db

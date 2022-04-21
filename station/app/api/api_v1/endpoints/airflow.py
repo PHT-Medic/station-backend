@@ -25,11 +25,11 @@ def run(run_msg: AirflowRunMsg, dag_id: str, db: Session = Depends(dependencies.
     """
 
     if dag_id == "run_local":
-        config = local_train.get_train_config(db, run_msg.train_id)
+        config = local_train.get_train_run_config(db, run_msg.train_id)
         run_id = airflow_client.trigger_dag("run_local", config)
         run_information = LocalTrainRun(train_id=run_msg.train_id, run_id=run_id)
         local_train.create_run(db, obj_in=run_information)
-
+        config_id = config["config_id"]
     elif dag_id == "run_pht_train":
         train = docker_trains.get_by_train_id(db, run_msg.train_id)
         if not train.config_id:
@@ -62,21 +62,6 @@ def get_airflow_run_information(run_id: str, dag_id: str):
     """
 
     run_info = airflow_client.get_run_information(dag_id, run_id)
-    for instance in run_info["tasklist"]["task_instances"][:]:
-        try:
-            instance.pop("sla_miss")
-        except KeyError:
-            pass
-        try:
-            instance.pop("pool_slots")
-        except KeyError:
-            pass
-        try:
-            instance.pop("pool")
-        except KeyError:
-            pass
-
-    print(run_info["tasklist"]["task_instances"][:])
     return run_info
 
 

@@ -58,7 +58,6 @@ class HarborClient:
         """
         endpoint = "/projects/master/repositories"
         r = requests.get(self.url + endpoint, auth=(self.username, self.password))
-        print(r.text)
         return [repositori["name"] for repositori in r.json()]
 
     def health_check(self) -> HealthStatus:
